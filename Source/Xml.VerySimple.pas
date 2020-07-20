@@ -999,7 +999,10 @@ end;
 
 function TXmlNode.FirstChild: TXmlNode;
 begin
-  Result := ChildNodes.First;
+  if ChildNodes.Count > 0 then
+    Result := ChildNodes.First
+  else
+    Result := nil;
 end;
 
 function TXmlNode.GetAttr(const AttrName: String): String;
