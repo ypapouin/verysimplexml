@@ -241,7 +241,6 @@ type
     procedure SetStandAlone(const Value: String); virtual;
     function GetStandAlone: String; virtual;
     function GetChildNodes: TXmlNodeList; virtual;
-    procedure CreateHeaderNode; virtual;
     function ExtractText(var Line: String; const StopChars: String; Options: TExtractTextOptions): String; virtual;
     procedure SetDocumentElement(Value: TXMlNode); virtual;
     procedure SetPreserveWhitespace(Value: Boolean);
@@ -262,6 +261,8 @@ type
     procedure Clear; virtual;
     ///	<summary> Adds a new node to the document, if it's the first ntElement then sets it as .DocumentElement </summary>
     function AddChild(const Name: String; NodeType: TXmlNodeType = ntElement): TXmlNode; virtual;
+    ///	<summary> Create xml version="1.0" encoding="utf-8" header </summary>
+    procedure CreateHeaderNode; virtual;
     ///	<summary> Creates a new node but doesn't adds it to the document nodes </summary>
     function CreateNode(const Name: String; NodeType: TXmlNodeType = ntElement): TXmlNode; virtual;
     /// <summary> Escapes XML control characters </summar>
@@ -701,7 +702,7 @@ var
   Tag: String;
 begin
   // A closing tag does not have any attributes nor text
-  if (TagStr <> '') and (TagStr[LowStr] = '/') then
+  if ((TagStr <> '') and (TagStr[LowStr] = '/')) or (TagStr = LineBreak) then
   begin
     Result := Parent;
     Parent := Parent.Parent;
